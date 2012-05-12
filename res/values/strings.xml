@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">本程序需要root权限。操作大文件需时较久请耐心等待。由于软件尚不完善，如果你在编译过程点击屏幕，系统会提示你应用程序无响应，请选择等待，程序重新响应说明编译完成。</string>
+    <string name="app_name">Apktool</string>
+    <string name="deapk">需要反编译的apk文件路径或编译的apk保存路径（如/mnt/sdcard/a.apk):</string>
+    <string name="dedir">反编译文件保存路径或重新编译的源码所在文件夹路径（如/mnt/sdcard/a)：</string>
+    <string name="decode">反编译</string>
+    <string name="dir">/mnt/sdcard/</string>
+    <string name="build">编译</string>
+    <string name="about">关于</string>
+    <string name="abouttext">本程序主要功能是调用第三方软件及库文件进行操作，由于不同型号的手机环境差别较大，所以不保证您的手机可以正常使用。使用签名功能时，上面的输入框填写需要签名的软件，下面填写签名文件保存路径。\n作者：东方巽雷\nQQ1135790188</string>
+    <string name="sign">签名</string>
+    <string name="choose">选择</string>
+
+</resources>
