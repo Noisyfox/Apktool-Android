@@ -2,7 +2,6 @@ package per.pqy.apktool;
 
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.InputStream;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,41 +25,17 @@ public class ApktoolActivity extends Activity {
 	TextView tv;
 	String SDCARD = Environment.getExternalStorageDirectory().getAbsolutePath();
 
+	SystemManager SM;
+	ApkOperator Apktool;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		if (!(new File(SDCARD + "/apktool").exists())) {
-			Toast.makeText(this,
-					"检测到您手机内存卡缺少相应插件，" + SDCARD + "/apktool文件夹不存在！软件无法工作！",
-					Toast.LENGTH_LONG).show();
-		}
 
-		SystemManager.RootCommand("mount -o remount,rw yaffs2 /");
-		SystemManager.RootCommand("mount -o remount,rw yaffs2 /system");
-
-		File file1 = new File("/system/xbin/busybox"), file2 = new File(
-				"/system/bin/busybox"), file3 = new File("/system/sbin/busybox");
-		if ((!file1.exists()) && (!file2.exists()) && (!file3.exists())) {
-			SystemManager.RootCommand("dd if=" + SDCARD
-					+ "/apktool/busybox of=/system/bin/busybox");
-			SystemManager.RootCommand("chmod 755 /system/bin/busybox");
-		}
-		if (!(new File("/lib").exists()))
-			SystemManager.RootCommand("busybox mkdir /lib");
-		if (!(new File("/tmp").exists()))
-			SystemManager.RootCommand("busybox mkdir /tmp");
-		SystemManager.RootCommand("busybox mount -t ext2 " + SDCARD
-				+ "/apktool/ext2 /lib");
-		File file4 = new File("/system/lib/libaaptcomplete.so");
-		if (!file4.exists()) {
-			SystemManager
-					.RootCommand("ln -s /lib/libaaptcomplete.so /system/lib/libaaptcomplete.so");
-		}
-		File file5 = new File("/system/bin/aapt");
-		if (!file5.exists()) {
-			SystemManager.RootCommand("ln -s /lib/aapt /system/bin/aapt");
-		}
+		SM = new SystemManager(this);
+		SM.prepareSystem();
+		Apktool = new ApkOperator(this, SM);
 
 		btn1 = (Button) findViewById(R.id.btn1);
 		btn2 = (Button) findViewById(R.id.btn2);
@@ -110,14 +85,15 @@ public class ApktoolActivity extends Activity {
 
 					String cmd = "sh " + SDCARD + "/apktool/apktool.sh d -f "
 							+ str1 + " " + str2;
-					process = Runtime.getRuntime().exec("su");
-					os = new DataOutputStream(process.getOutputStream());
-					os.writeBytes(cmd + "\n");
-					os.writeBytes("exit\n");
-					os.flush();
-
-					process.waitFor();
-
+					/*
+					 * process = Runtime.getRuntime().exec("su"); os = new
+					 * DataOutputStream(process.getOutputStream());
+					 * os.writeBytes(cmd + "\n"); os.writeBytes("exit\n");
+					 * os.flush();
+					 * 
+					 * process.waitFor();
+					 */
+					SystemManager.RootCommand(cmd);
 					Toast.makeText(ApktoolActivity.this, "反编译完成！",
 							Toast.LENGTH_LONG).show();
 				} catch (Exception e) {
@@ -279,5 +255,11 @@ public class ApktoolActivity extends Activity {
 		}
 
 		return false;
+	}
+	
+	@Override
+	public void onDestroy(){
+		SM.cleanSystem();
+		super.onDestroy();
 	}
 }

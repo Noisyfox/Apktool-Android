@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
     <string name="hello">本程序需要root权限。操作大文件需时较久请耐心等待。由于软件尚不完善，如果你在编译过程点击屏幕，系统会提示你应用程序无响应，请选择等待，程序重新响应说明编译完成。</string>
-    <string name="app_name">Apktool</string>
+    <string name="app_name">Apk工房</string>
     <string name="deapk">需要反编译的apk文件路径或编译的apk保存路径（如/mnt/sdcard/a.apk):</string>
     <string name="dedir">反编译文件保存路径或重新编译的源码所在文件夹路径（如/mnt/sdcard/a)：</string>
     <string name="decode">反编译</string>
@@ -12,5 +14,12 @@
     <string name="abouttext">本程序主要功能是调用第三方软件及库文件进行操作，由于不同型号的手机环境差别较大，所以不保证您的手机可以正常使用。使用签名功能时，上面的输入框填写需要签名的软件，下面填写签名文件保存路径。\n作者：东方巽雷\nQQ1135790188</string>
     <string name="sign">签名</string>
     <string name="choose">选择</string>
-
+    <string name="no_apktoolext">检测到您手机内存卡缺少相应插件,<xliff:g id="sdpath">%1$s</xliff:g>文件夹不存在！软件无法工作！</string>
+    <string name="sys_init_fail">系统初始化失败</string>
+    <string name="apk_fail"><xliff:g id="path">%1$s</xliff:g>不是一个有效的apk！请检查</string>
+    <string name="outapk_exist"><xliff:g id="path">%1$s</xliff:g>是一个文件夹！请检查</string>
+    <string name="project_create_dir_exist">当前的文件夹"<xliff:g id="path">%1$s</xliff:g>"已存在，在该文件夹中创建工程将可能导致原有数据丢失！是否使用该文件夹？</string>
+    <string name="dir_is_file">"<xliff:g id="path">%1$s</xliff:g>"是一个文件，无法创建该文件夹！请检查</string>
+    <string name="mkdir_fail">创建文件夹"<xliff:g id="path">%1$s</xliff:g>"失败！请检查</string>
+    <string name="su_fail">获取su权限失败！请检查</string>
 </resources>

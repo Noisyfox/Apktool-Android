@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="255dp" android:background="#FFFFFF">
+    <TableRow android:layout_height="wrap_content" android:background="#444444" android:id="@+id/tableRow1" android:layout_width="fill_parent">
+        <TextView android:layout_height="wrap_content" android:textColor="#FFFFFF" android:background="#444444" android:textAppearance="?android:attr/textAppearanceLarge" android:textSize="24dp" android:layout_width="fill_parent" android:id="@+id/textViewTitle" android:layout_marginLeft="12dip" android:layout_marginRight="8dip" android:layout_marginTop="8dip" android:layout_marginBottom="8dip"></TextView>
+    </TableRow>
+    <TextView android:layout_height="wrap_content" android:textColor="#000000" android:gravity="center" android:textAppearance="?android:attr/textAppearanceLarge" android:id="@+id/textViewInfo" android:layout_width="fill_parent" android:singleLine="false" android:layout_marginLeft="4dip" android:layout_marginRight="4dip" android:layout_marginTop="12dip" android:layout_marginBottom="12dip"></TextView>
+    <LinearLayout android:background="#888888" android:id="@+id/linearLayout1" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <Button android:layout_height="wrap_content" android:text="@+string/confirm" android:textSize="20dp" android:id="@+id/btnOK" android:layout_width="120dp" android:layout_marginLeft="4dip" android:layout_marginRight="3dip" android:layout_marginTop="8dip" android:layout_marginBottom="3dip"></Button>
+        <Button android:layout_height="wrap_content" android:text="@+string/cancel" android:textSize="20dp" android:id="@+id/btnCancel" android:layout_width="120dp" android:layout_marginLeft="3dip" android:layout_marginRight="3dip" android:layout_marginTop="8dip" android:layout_marginBottom="3dip"></Button>
+    </LinearLayout>
+</LinearLayout>
