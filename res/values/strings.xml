@@ -22,4 +22,5 @@
     <string name="dir_is_file">"<xliff:g id="path">%1$s</xliff:g>"是一个文件，无法创建该文件夹！请检查</string>
     <string name="mkdir_fail">创建文件夹"<xliff:g id="path">%1$s</xliff:g>"失败！请检查</string>
     <string name="su_fail">获取su权限失败！请检查</string>
+    <string name="loading">载入中，请稍候</string>	
 </resources>
