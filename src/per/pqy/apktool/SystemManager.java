@@ -1,23 +1,21 @@
 package per.pqy.apktool;
 
-import android.content.Context;
-
 import java.io.DataOutputStream;
 import java.io.File;
 
 import android.os.Environment;
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import per.pqy.apktool.GlobalValues.GPath;
+
+import per.pqy.apktool.GlobalValues.*;
 
 public class SystemManager {
 
 	public Boolean mSystemOK = false;
 	private Context mContext;
-	private Process mProcess = null;
-	private DataOutputStream mOs = null;
-
+	
 	public SystemManager(Context context) {
 		mContext = context;
 	}
@@ -26,15 +24,6 @@ public class SystemManager {
 	 * 初始化系统
 	 */
 	public boolean prepareSystem() {
-		//获取su权限
-		try {
-			mProcess = Runtime.getRuntime().exec("su");
-			mOs = new DataOutputStream(mProcess.getOutputStream());
-		} catch (Exception e) {
-			Toast.makeText(mContext, mContext.getString(R.string.su_fail),
-					Toast.LENGTH_LONG).show();
-			return false;
-		}
 		// 检测外置数据完整性
 		if (!(new File(GPath.APKTOOL_EXT).exists())) {
 			// Toast.makeText(mContext, getString(R.string.no_apktoolext,
@@ -80,16 +69,6 @@ public class SystemManager {
 		// 取消挂载java
 		RootCommand2(GPath.BUSYBOX + " umount /lib");
 		mSystemOK = false;
-		try {
-			if (mOs != null) {
-				mOs.close();
-			}
-			mProcess.destroy();
-		} catch (Exception e) {
-		} finally {
-			mOs = null;
-			mProcess = null;
-		}
 	}
 
 	public static boolean RootCommand(String command) {
@@ -101,9 +80,9 @@ public class SystemManager {
 			os.writeBytes(command + "\n");
 			os.writeBytes("exit\n");
 			os.flush();
-			Log.d("hrh", command + " : " + process.waitFor());
+			Log.d(GString.LOG_TAG, command + " : " + process.waitFor());
 		} catch (Exception e) {
-			Log.d("*** DEBUG ***", "ROOT REE" + e.getMessage());
+			Log.d(GString.LOG_TAG, "ROOT REE" + e.getMessage());
 			return false;
 		} finally {
 			try {
@@ -114,25 +93,38 @@ public class SystemManager {
 			} catch (Exception e) {
 			}
 		}
-		Log.d("*** DEBUG ***", "RootSUC ");
+		Log.d(GString.LOG_TAG, "RootSUC ");
 		return true;
 	}
 
 	public int RootCommand2(String command) {
-		if (mProcess == null || mOs == null)
-			return -1;
+		Process process = null;
+		DataOutputStream os = null;
 		int Result = -1;
 		try {
-			mOs.writeBytes(command + "\n");
-			mOs.writeBytes("exit\n");
-			mOs.flush();
-			Result = mProcess.waitFor();
-			Log.d("hrh", command + " : " + Result);
+			process = Runtime.getRuntime().exec("su");
+			os = new DataOutputStream(process.getOutputStream());
+			os.writeBytes(command + "\n");
+			os.writeBytes("exit\n");
+			os.flush();
+			Result = process.waitFor();
+			Log.d(GString.LOG_TAG, command + " : " + Result);
 		} catch (Exception e) {
-			Log.d("*** DEBUG ***", "ROOT REE" + e.getMessage());
+			Toast.makeText(mContext,
+						   mContext.getString(R.string.su_fail),
+						   Toast.LENGTH_LONG).show();
+			Log.d(GString.LOG_TAG, "ROOT REE" + e.getMessage());
 			return -1;
+		} finally {
+			try {
+				if (os != null) {
+					os.close();
+				}
+				process.destroy();
+			} catch (Exception e) {
+			}
 		}
-		Log.d("*** DEBUG ***", "RootSUC ");
+		Log.d(GString.LOG_TAG, "RootSUC ");
 		return Result;
 	}
 
