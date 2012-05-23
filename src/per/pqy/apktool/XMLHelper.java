@@ -15,6 +15,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlSerializer;
 
 import android.util.Xml;
+import android.os.Bundle;
 
 public class XMLHelper {
 
@@ -23,13 +24,47 @@ public class XMLHelper {
 	}
 	
 	public class XMLTags {
-		public String name="";
-		public List<XMLTags> childTags=null;
+		public String mName="";
+		public String mValue=null;
+		private List<XMLTags> childTags= new ArrayList<XMLTags>();
+		private XMLTags fatherTag=null;
+		private Bundle attributes=new Bundle();
 		
-		public XMLTags(String n){
-			name = n;
-			childTags = new LinkedList();
+		public XMLTags(String name){
+			mName = name;
 		}
+		
+		public void setAttribute(String name,String value){
+			if(attributes.keySet().contains(name)){
+				attributes.remove(name);
+			}
+			attributes.putString(name,value);
+		}
+		
+		public String getAttribute(String name){
+			return attributes.getString(name, null);
+		}
+		
+		public void addChildTag(XMLTags tag){
+			if(tag.fatherTag!=null){
+				tag.fatherTag.removeChildTag(tag);		
+			}
+			if(!childTags.contains(tag)){
+				childTags.add(tag);
+			}
+			tag.setFatherTag(this);
+		}
+		
+		public void removeChildTag(XMLTags tag){
+			if(childTags.remove(tag)){
+				tag.setFatherTag(null);
+			}
+		}
+		
+		public void setFatherTag(XMLTags fathertag){
+			fatherTag=fathertag;
+		}
+		
 	}
 
 	public XMLFile openXML(String path) {
@@ -73,15 +108,28 @@ public class XMLHelper {
 		return true;
 	}
 	
+	private void writeTag(XmlSerializer serializer, XMLTags tag)throws Exception{
+		serializer.startTag(null, tag.mName);
+		for(int i=0;i<tag.attributes.size();i++){
+			String key =(String)tag.attributes.keySet().toArray()[i];
+			serializer.attribute(null,key,tag.attributes.getString(key,null));
+		}
+		serializer.text(tag.mValue);
+		for(XMLTags t :tag.childTags){
+			writeTag(serializer,t);
+		}
+		serializer.endTag(null,tag.mName);
+	}
+	
 	public boolean writeXML(XMLFile xml){
 		OutputStream outStream = null;
-		boolean success = true;
+		//boolean success = true;
 		try{
 			outStream=new BufferedOutputStream(new FileOutputStream(xml.XML));
 			XmlSerializer serializer = Xml.newSerializer();
 			serializer.setOutput(outStream, "UTF-8");
 			serializer.startDocument("UTF-8", true);
-			
+			writeTag(serializer, generateXML());
 			serializer.endDocument();
 			outStream.flush();
 		}catch(Exception ex){
@@ -91,8 +139,8 @@ public class XMLHelper {
 	}
 	
 	public XMLTags generateXML() {
-		XMLTags tags =null;
-		return tags;
+		XMLTags rootTag =null;
+		return rootTag;
 	}
 
 }
