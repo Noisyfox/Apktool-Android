@@ -134,13 +134,17 @@ public class XMLHelper {
 			outStream.flush();
 		}catch(Exception ex){
 			ex.printStackTrace();
+		}finally{
+			try{
+				outStream.close();	
+			}catch(Exception ex){
+			}
 		}
 		return true;
 	}
 	
 	public XMLTags generateXML() {
-		XMLTags rootTag =null;
-		return rootTag;
+		return null;
 	}
 
 }

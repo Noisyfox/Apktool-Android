@@ -22,6 +22,14 @@ public class ApkProject {
 	private boolean iDirLocal = false;
 	private boolean oDirLocal = false;
 	private Context mContext;
+	
+	private XMLHelper XMLOperator =new XMLHelper(){
+		@Override
+		public XMLTags generateXML() {
+			XMLTags rootTag =null;
+			return rootTag;
+		}
+	};
 
 	public class Framework {
 		private File _Res = null;
