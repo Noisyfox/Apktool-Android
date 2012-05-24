@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<apktool_project name="SystemUI" projectVersion="1.0" externalVersion="1.0">
+    <workingDirectory>
+        <inputApk name="/system/app/SystemUI.apk" isLocal="false"/>
+        <outputApk name="SystemUI.apk" isLocal="true"/>
+        <inputDirectory name="SystemUI" isLocal="true"/>
+        <outputDirectory name="" isLocal="true" sameAsInput="true"/>
+    </workingDirectory>
+    <uses-framework>
+        <framework name="framework-res.apk" tag="main-res" isLocal="false"/>
+        <framework name="framework-miui-res.apk" tag="miui-res" isLocal="false"/>
+    </uses-framework>
+</apktool_project>

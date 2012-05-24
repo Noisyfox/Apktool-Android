@@ -54,13 +54,6 @@ public class SystemManager {
 		}
 		// 测试
 		if (RootCommand2("aapt") == 127 || RootCommand2(GPath.JRE) == 127) {
-			/*
-			Toast.makeText(mContext,
-					mContext.getString(R.string.sys_init_fail),
-					Toast.LENGTH_LONG).show();
-			return false;
-			*/
-
 			throw new Exception(mContext.getString(R.string.sys_init_fail));
 		}
 		mSystemOK = true;

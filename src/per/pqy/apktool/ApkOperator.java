@@ -3,14 +3,11 @@ package per.pqy.apktool;
 import java.io.File;
 import java.util.List;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.widget.Toast;
 
-public class ApkOperator extends Activity {
+//负责处理apkproject并与UI进程交互
+public class ApkOperator {
 
 	private SystemManager SM;
 	private Context mContext;
@@ -20,7 +17,8 @@ public class ApkOperator extends Activity {
 		SM = sm;
 	}
 
-	public final ApkProject createApkProject(String projectpath) {
+	public final ApkProject createApkProject(String projectName,
+			String projectpath) {
 		ApkProject APK = new ApkProject(mContext);
 		APK.project = new File(projectpath);
 		if (APK.project.exists()) {
@@ -48,11 +46,17 @@ public class ApkOperator extends Activity {
 				return null;
 			}
 		}
+		// 创建project.xml
+
 		return APK;
 	}
-	
+
+	public final void openProject(ApkProject apk) {
+
+	}
+
 	public final void installFramework(List<ApkProject.Framework> framework) {
-		for(ApkProject.Framework _res : framework){
+		for (ApkProject.Framework _res : framework) {
 			_res.getFile();
 		}
 	}

@@ -3,7 +3,7 @@ package per.pqy.apktool;
 import java.io.DataOutputStream;
 import java.io.File;
 
-import per.pqy.apktool.GlobalValues.GPath;
+import per.pqy.apktool.GlobalValues.*;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -35,42 +35,31 @@ public class ApktoolActivity extends Activity {
 	ApkOperator Apktool;
 	ProgressDialog mProgressDialog = null;
 
-	public final int MSG_NULL = 0;
-	public final int MSG_SHOW_LOADING_DIALOG = 1;
-	public final int MSG_HIDE_LOADING_DIALOG = 2;
-	public final int MSG_LOADING_START = 3;
-	public final int MSG_LOADING_FINISH = 4;
-	public final int MSG_LOADING_FAIL = 5;
-	public final int MSG_SHOW_TOAST = 6;
-	public final int MSG_CORE_ENABLE = 7;
-	public final int MSG_CORE_DISABLE = 8;
-	public final String MSG_TYPE = "MSG";
-	public final String MSG_INFO = "MSG_INFO";
-
 	Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			switch (msg.getData().getInt(MSG_TYPE, MSG_NULL)) {
-			case MSG_SHOW_LOADING_DIALOG:
+			switch (msg.getData().getInt(GMsg.MSG_TYPE, GMsg.MSG_NULL)) {
+			case GMsg.MSG_SHOW_LOADING_DIALOG:
+				loadingDialog(msg.getData().getString(GMsg.MSG_INFO), true);
+				break;
+			case GMsg.MSG_HIDE_LOADING_DIALOG:
+				loadingDialog(false);
+				break;
+			case GMsg.MSG_LOADING_START:// 开始初始化
 				loadingDialog(true);
 				break;
-			case MSG_HIDE_LOADING_DIALOG:
+			case GMsg.MSG_LOADING_FINISH:// 初始化成功
 				loadingDialog(false);
 				break;
-			case MSG_LOADING_START:// 开始初始化
-				loadingDialog(true);
-				break;
-			case MSG_LOADING_FINISH:// 初始化成功
+			case GMsg.MSG_LOADING_FAIL:// 初始化失败
 				loadingDialog(false);
 				break;
-			case MSG_LOADING_FAIL:// 初始化失败
-				loadingDialog(false);
-				break;
-			case MSG_SHOW_TOAST:
-				Toast.makeText(mContext, msg.getData().getString(MSG_INFO),
+			case GMsg.MSG_SHOW_TOAST:
+				Toast.makeText(mContext,
+						msg.getData().getString(GMsg.MSG_INFO),
 						Toast.LENGTH_LONG).show();
 				break;
-			case MSG_NULL:
+			case GMsg.MSG_NULL:
 			default:
 				break;
 			}
@@ -79,20 +68,37 @@ public class ApktoolActivity extends Activity {
 
 	private void loadingDialog(boolean show) {
 		if (show) {
+			if (mProgressDialog != null) {
+				mProgressDialog.dismiss();
+				mProgressDialog = null;
+			}
 			mProgressDialog = ProgressDialog.show(mContext, "",
 					mContext.getString(R.string.loading), true);
 		} else {
 			if (mProgressDialog != null) {
 				mProgressDialog.dismiss();
+				mProgressDialog = null;
 			}
 		}
 	}
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-		// 初始化
-		Thread background = new Thread() {
+	private void loadingDialog(String msg, boolean show) {
+		if (show) {
+			if (mProgressDialog != null) {
+				mProgressDialog.dismiss();
+				mProgressDialog = null;
+			}
+			mProgressDialog = ProgressDialog.show(mContext, "", msg, true);
+		} else {
+			if (mProgressDialog != null) {
+				mProgressDialog.dismiss();
+				mProgressDialog = null;
+			}
+		}
+	}
+
+	private void doInit() {
+		Thread initThread = new Thread() {
 			public void run() {
 				init_Start();
 				try {
@@ -105,40 +111,22 @@ public class ApktoolActivity extends Activity {
 			}
 
 			private void init_Start() {
-				Message msg = new Message();
-				Bundle b = new Bundle();
-				b.putInt(MSG_TYPE, MSG_LOADING_START);
-				msg.setData(b);
-				mHandler.sendMessage(msg);
+				Util.sendMessage(mHandler, GMsg.MSG_LOADING_START);
 			}
 
 			public void init_Success() {
-				Message msg = new Message();
-				Bundle b = new Bundle();
-				b.putInt(MSG_TYPE, MSG_LOADING_FINISH);
-				msg.setData(b);
-				mHandler.sendMessage(msg);
+				Util.sendMessage(mHandler, GMsg.MSG_LOADING_FINISH);
 			}
 
 			public void init_Fail() {
-				Message msg = new Message();
-				Bundle b = new Bundle();
-				b.putInt(MSG_TYPE, MSG_LOADING_FAIL);
-				msg.setData(b);
-				mHandler.sendMessage(msg);
+				Util.sendMessage(mHandler, GMsg.MSG_LOADING_FAIL);
 			}
 
 			public void err_Msg(String s) {
-				Message msg = new Message();
-				Bundle b = new Bundle();
-				b.putInt(MSG_TYPE, MSG_SHOW_TOAST);
-				b.putString(MSG_INFO, s);
-				msg.setData(b);
-				mHandler.sendMessage(msg);
+				Util.sendMessage(mHandler, GMsg.MSG_SHOW_TOAST, s);
 			}
 		};
-		background.start();
-
+		initThread.start();
 	}
 
 	@Override
@@ -148,6 +136,8 @@ public class ApktoolActivity extends Activity {
 		mContext = this;
 		SM = new SystemManager(mContext);
 		Apktool = new ApkOperator(mContext, SM);
+		// 初始化
+		doInit();
 
 		btn1 = (Button) findViewById(R.id.btn1);
 		btn2 = (Button) findViewById(R.id.btn2);

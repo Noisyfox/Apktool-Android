@@ -6,7 +6,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 import per.pqy.apktool.GlobalValues.GString;
 
 public class ApkProject {
@@ -63,8 +62,6 @@ public class ApkProject {
 			return false;
 		}
 		project = new File(projectpath);
-		Toast.makeText(mContext, mContext.getString(R.string.dir_is_file),
-				Toast.LENGTH_LONG).show();
 		opened = true;
 		return true;
 	}
