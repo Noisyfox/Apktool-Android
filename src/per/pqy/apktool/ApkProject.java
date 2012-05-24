@@ -7,10 +7,10 @@ import java.util.List;
 import android.content.Context;
 import android.util.Log;
 import per.pqy.apktool.GlobalValues.GString;
-import per.pqy.apktool.XMLHelper.XMLTags;
 
 public class ApkProject {
-	public boolean opened = false;
+	private boolean opened = false;
+	private String projectName="SystemUI";
 	private File inputApk = null;
 	private File outputApk = null;
 	private File inputDir = null;
@@ -26,10 +26,17 @@ public class ApkProject {
 	private XMLHelper XMLOperator =new XMLHelper(){
 		@Override
 		public XMLTags generateXML() {
-			super.generateXML();
-			XMLTags rotTag=new XMLTags("APKTOOL");
+			XMLTags rootTag=new XMLTags("apktool_project");
+			rootTag.setAttribute("name", projectName);
+			rootTag.setAttribute("projectVersion", "1.0");
+			rootTag.setAttribute("externalVersion", "1.0");
 			
-			return rotTag;
+			XMLTags workingDirectoryTag=new XMLTags("workingDirectory");
+			XMLTags inputApkTag=new XMLTags("inputApk");
+			inputApkTag.setAttribute("name", "/system/app/SystemUI.apk");
+			workingDirectoryTag.addChildTag(inputApkTag);
+			rootTag.addChildTag(workingDirectoryTag);
+			return rootTag;
 		}
 	};
 

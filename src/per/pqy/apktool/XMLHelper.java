@@ -27,7 +27,7 @@ public class XMLHelper {
 	
 	public class XMLTags {
 		public String mName="";
-		public String mValue=null;
+		public String mValue="";
 		private List<XMLTags> childTags= new ArrayList<XMLTags>();
 		private XMLTags fatherTag=null;
 		private Bundle attributes=new Bundle();
@@ -136,13 +136,13 @@ public class XMLHelper {
 
 	public XMLFile createXML(String path) {
 		XMLFile xmlF = new XMLFile();
-		File xml = new File("/data/data/","aa.txt");
+		File xml = new File("/mnt/sdcard","aa.xml");
 		xmlF.XML = xml;
 		OutputStream outStream = null;
 		boolean success = true;
 		try {
 			xml.createNewFile();
-			xml.setWritable(true);
+			//xml.setWritable(true);
 			outStream = new BufferedOutputStream(new FileOutputStream(xml,false));
 			XmlSerializer serializer = Xml.newSerializer();
 			serializer.setOutput(outStream, "UTF-8");
