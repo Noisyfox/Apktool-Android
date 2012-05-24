@@ -6,11 +6,11 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
-import per.pqy.apktool.GlobalValues.GString;
+import per.pqy.apktool.GlobalValues.*;
 
 public class ApkProject {
 	private boolean opened = false;
-	private String projectName = "SystemUI";
+	private String projectName = "";
 	private File inputApk = null;
 	private File outputApk = null;
 	private File inputDir = null;
@@ -21,28 +21,71 @@ public class ApkProject {
 	private boolean oApkLocal = false;
 	private boolean iDirLocal = false;
 	private boolean oDirLocal = false;
-	private Context mContext;
+	private Context mContext = null;
 
 	private XMLHelper XMLOperator = new XMLHelper() {
 		@Override
 		public XMLTags generateXML() {
 			XMLTags rootTag = new XMLTags("apktool_project");
 			rootTag.setAttribute("name", projectName);
-			rootTag.setAttribute("projectVersion", "1.0");
-			rootTag.setAttribute("externalVersion", "1.0");
+			rootTag.setAttribute("projectVersion", GCore.MAINAPP_VERSION);
+			rootTag.setAttribute("externalVersion", GCore.EXTERNAL_VERSION);
 
-			XMLTags workingDirectoryTag = new XMLTags("workingDirectory");
-			XMLTags inputApkTag = new XMLTags("inputApk");
-			inputApkTag.setAttribute("name", "/system/app/SystemUI.apk");
-			workingDirectoryTag.addChildTag(inputApkTag);
-			rootTag.addChildTag(workingDirectoryTag);
+			{// workingDirectoryTag
+				XMLTags workingDirectoryTag = new XMLTags("workingDirectory");
+				rootTag.addChildTag(workingDirectoryTag);
+				// inputApk
+				XMLTags inputApkTag = new XMLTags("inputApk");
+				inputApkTag.setAttribute("name", inputApk == null ? ""
+						: inputApk.getAbsolutePath());
+				inputApkTag.setAttribute("isLocal", iApkLocal ? "true"
+						: "false");
+				workingDirectoryTag.addChildTag(inputApkTag);
+				// outputApk
+				XMLTags outputApkTag = new XMLTags("outputApk");
+				outputApkTag.setAttribute("name", outputApk == null ? ""
+						: outputApk.getAbsolutePath());
+				outputApkTag.setAttribute("isLocal", oApkLocal ? "true"
+						: "false");
+				workingDirectoryTag.addChildTag(outputApkTag);
+				// inputDir
+				XMLTags inputDirTag = new XMLTags("inputDirectory");
+				inputDirTag.setAttribute("name", inputDir == null ? ""
+						: inputDir.getAbsolutePath());
+				inputDirTag.setAttribute("isLocal", iDirLocal ? "true"
+						: "false");
+				workingDirectoryTag.addChildTag(inputDirTag);
+				// outputDir
+				XMLTags outputDirTag = new XMLTags("outputDirectory");
+				outputDirTag.setAttribute("name", outputDir == null ? ""
+						: outputDir.getAbsolutePath());
+				outputDirTag.setAttribute("isLocal", oDirLocal ? "true"
+						: "false");
+				workingDirectoryTag.addChildTag(outputDirTag);
+			}
+			{// framework-res tag
+				XMLTags uses_frameworkTag = new XMLTags("uses-framework");
+				rootTag.addChildTag(uses_frameworkTag);
+				if (frameworks != null) {
+					for (Framework fm : frameworks) {
+						XMLTags frameworkTag = new XMLTags("framework");
+						uses_frameworkTag.addChildTag(frameworkTag);
+						frameworkTag.setAttribute("name",
+								fm.getFile() == null ? "" : fm.getFile()
+										.getAbsolutePath());
+						frameworkTag.setAttribute("tag", fm.tag);
+						frameworkTag.setAttribute("isLocal",
+								fm.isLocal() ? "true" : "false");
+					}
+				}
+			}
 			return rootTag;
 		}
 	};
 
 	public class Framework {
 		private File _Res = null;
-		private String tag = null;
+		private String tag = "";
 		private boolean local = false;
 
 		public Framework(String p, String t, boolean l) {

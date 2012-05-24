@@ -36,7 +36,8 @@ public abstract class GlobalValues {
 	}
 
 	public static final class GCore {
-		// public static final
+		public static final String MAINAPP_VERSION = "1.0";
+		public static final String EXTERNAL_VERSION = "1.0";
 	}
 
 }
