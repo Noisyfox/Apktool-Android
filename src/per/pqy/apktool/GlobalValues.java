@@ -20,5 +20,9 @@ public abstract class GlobalValues {
 	static public class GString {
 		static public String LOG_TAG = "apkworkstation";
 	}
+	
+	public static final class GCore {
+		//public static final  
+	}
 
 }

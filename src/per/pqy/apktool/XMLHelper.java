@@ -42,7 +42,7 @@ public class XMLHelper {
 		}
 		
 		public String getAttribute(String name){
-			return attributes.getString(name, null);
+			return attributes.getString(name);
 		}
 		
 		public void addChildTag(XMLTags tag){
@@ -79,18 +79,21 @@ public class XMLHelper {
 
 	public XMLFile createXML(String path) {
 		XMLFile xmlF = new XMLFile();
-		File xml = new File(path);
+		File xml = new File("/data/data/","aa.txt");
 		xmlF.XML = xml;
 		OutputStream outStream = null;
 		boolean success = true;
 		try {
-			outStream = new BufferedOutputStream(new FileOutputStream(xml));
+			xml.createNewFile();
+			xml.setWritable(true);
+			outStream = new BufferedOutputStream(new FileOutputStream(xml,false));
 			XmlSerializer serializer = Xml.newSerializer();
 			serializer.setOutput(outStream, "UTF-8");
 			serializer.startDocument("UTF-8", true);
 			serializer.endDocument();
 			outStream.flush();
 		} catch (Exception e) {
+			e.printStackTrace();
 			success = false;
 		} finally {
 			if (outStream != null) {
@@ -112,7 +115,7 @@ public class XMLHelper {
 		serializer.startTag(null, tag.mName);
 		for(int i=0;i<tag.attributes.size();i++){
 			String key =(String)tag.attributes.keySet().toArray()[i];
-			serializer.attribute(null,key,tag.attributes.getString(key,null));
+			serializer.attribute(null,key,tag.getAttribute(key));
 		}
 		serializer.text(tag.mValue);
 		for(XMLTags t :tag.childTags){
