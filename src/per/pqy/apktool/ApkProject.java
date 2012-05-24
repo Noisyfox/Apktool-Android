@@ -7,6 +7,7 @@ import java.util.List;
 import android.content.Context;
 import android.util.Log;
 import per.pqy.apktool.GlobalValues.GString;
+import per.pqy.apktool.XMLHelper.XMLTags;
 
 public class ApkProject {
 	public boolean opened = false;
@@ -21,6 +22,16 @@ public class ApkProject {
 	private boolean iDirLocal = false;
 	private boolean oDirLocal = false;
 	private Context mContext;
+	
+	private XMLHelper XMLOperator =new XMLHelper(){
+		@Override
+		public XMLTags generateXML() {
+			super.generateXML();
+			XMLTags rotTag=new XMLTags("APKTOOL");
+			
+			return rotTag;
+		}
+	};
 
 	public class Framework {
 		private File _Res = null;
@@ -67,7 +78,9 @@ public class ApkProject {
 	}
 
 	public final void saveProject() {
-
+		XMLHelper.XMLFile a;
+		a=XMLOperator.createXML("/aaaava.xml");
+		XMLOperator.writeXML(a);
 	}
 
 	public final void addFramework(String frameworkRes, String tag,

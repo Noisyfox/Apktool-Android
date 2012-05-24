@@ -34,5 +34,9 @@ public abstract class GlobalValues {
 		public static final String MSG_TYPE = "MSG";
 		public static final String MSG_INFO = "MSG_INFO";
 	}
+	
+	public static final class GCore {
+		//public static final  
+	}
 
 }

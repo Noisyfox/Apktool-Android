@@ -34,6 +34,7 @@ public class ApktoolActivity extends Activity {
 	SystemManager SM;
 	ApkOperator Apktool;
 	ProgressDialog mProgressDialog = null;
+	ApkProject ap =new ApkProject(this);
 
 	Handler mHandler = new Handler() {
 		@Override
@@ -103,6 +104,7 @@ public class ApktoolActivity extends Activity {
 				init_Start();
 				try {
 					SM.prepareSystem();
+					ap.saveProject();
 				} catch (Exception e) {
 					err_Msg(e.getMessage());
 					init_Fail();
@@ -148,7 +150,8 @@ public class ApktoolActivity extends Activity {
 
 		btn1.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-
+			
+				/*
 				str1 = et1.getText().toString();
 				str2 = et2.getText().toString();
 				if (!(new File(str1).exists())) {
@@ -184,7 +187,7 @@ public class ApktoolActivity extends Activity {
 				SystemManager.RootCommand(cmd);
 				Toast.makeText(ApktoolActivity.this, "反编译完成！",
 						Toast.LENGTH_LONG).show();
-
+*/
 			}
 
 		});
