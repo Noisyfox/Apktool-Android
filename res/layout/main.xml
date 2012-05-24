@@ -23,14 +23,14 @@
         android:text="@string/deapk"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="15dp" />
-
+
     <EditText
         android:id="@+id/et1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/tv1"
+        android:layout_toLeftOf="@+id/selectinput"
         android:text="@string/dir" >
 
         <requestFocus />
@@ -80,5 +80,21 @@
         android:layout_alignBottom="@+id/btn2"
         android:layout_alignParentRight="true"
         android:text="@string/sign" />
+
+    <Button
+        android:id="@+id/selectinput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tv1"
+        android:text="@string/browser" />
+
+    <Button
+        android:id="@+id/selectoutput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tv2"
+        android:text="@string/browser" />
 
 </RelativeLayout>

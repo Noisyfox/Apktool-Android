@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 public class ApktoolActivity extends Activity {
 	/** Called when the activity is first created. */
-	Button btn1, btn2, btn3, btn4;
+	Button btn1, btn2, btn3, btn_in, btn_out;
 	EditText et1, et2;
 	String str1, str2;
 	TextView tv;
@@ -35,6 +35,9 @@ public class ApktoolActivity extends Activity {
 	ApkOperator Apktool;
 	ProgressDialog mProgressDialog = null;
 	ApkProject ap = new ApkProject(this);
+
+	private static int RESULTCODE_FILESELECT_IN = 1;
+	private static int RESULTCODE_FILESELECT_OUT = 2;
 
 	Handler mHandler = new Handler() {
 		@Override
@@ -144,6 +147,8 @@ public class ApktoolActivity extends Activity {
 		btn1 = (Button) findViewById(R.id.btn1);
 		btn2 = (Button) findViewById(R.id.btn2);
 		btn3 = (Button) findViewById(R.id.btn3);
+		btn_in = (Button) findViewById(R.id.selectinput);
+		btn_out = (Button) findViewById(R.id.selectoutput);
 
 		et1 = (EditText) findViewById(R.id.et1);
 		et2 = (EditText) findViewById(R.id.et2);
@@ -278,8 +283,8 @@ public class ApktoolActivity extends Activity {
 				DataOutputStream os = null;
 				try {
 
-					String cmd = "sh " + SDCARD + "/apktool/sign/signapk.sh " + str1
-							+ " " + str2;
+					String cmd = "sh " + SDCARD + "/apktool/sign/signapk.sh "
+							+ str1 + " " + str2;
 
 					process = Runtime.getRuntime().exec("su");
 					os = new DataOutputStream(process.getOutputStream());
@@ -307,9 +312,26 @@ public class ApktoolActivity extends Activity {
 		}
 
 		);
+		
+		btn_in.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(ApktoolActivity.this,MyFileManager.class);
+				startActivityForResult(intent, RESULTCODE_FILESELECT_IN);
+			}
+		}
+		);
 
+		btn_out.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(ApktoolActivity.this,MyFileManager.class);
+				startActivityForResult(intent, RESULTCODE_FILESELECT_OUT);
+			}
+		}
+		);
+		
 	}
 
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu, menu);
@@ -330,6 +352,21 @@ public class ApktoolActivity extends Activity {
 		}
 
 		return false;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == RESULTCODE_FILESELECT_IN) {
+			Bundle bundle = null;
+			if (data != null && (bundle = data.getExtras()) != null) {
+				et1.setText(bundle.getString("file"));
+			}
+		} else if (requestCode == RESULTCODE_FILESELECT_OUT) {
+			Bundle bundle = null;
+			if (data != null && (bundle = data.getExtras()) != null) {
+				et2.setText(bundle.getString("file"));
+			}
+		}
 	}
 
 	@Override

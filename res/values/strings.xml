@@ -3,6 +3,7 @@
 
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
+    <string name="browser">浏览</string>
     <string name="hello">本程序需要root权限。操作大文件需时较久请耐心等待。由于软件尚不完善，如果你在编译过程点击屏幕，系统会提示你应用程序无响应，请选择等待，程序重新响应说明编译完成。</string>
     <string name="app_name">Apk工房</string>
     <string name="deapk">需要反编译的apk文件路径或编译的apk保存路径（如/mnt/sdcard/a.apk):</string>
@@ -23,4 +24,6 @@
     <string name="mkdir_fail">创建文件夹"<xliff:g id="path">%1$s</xliff:g>"失败！请检查</string>
     <string name="su_fail">获取su权限失败！请检查</string>
     <string name="loading">载入中，请稍候</string>	
+    <string name="return_root">返回根目录..</string>
+    <string name="return_upwards">返回上一层..</string>
 </resources>

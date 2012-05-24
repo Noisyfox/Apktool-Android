@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="250dp"
+  android:layout_height="400dp"
+  android:orientation="vertical"
+  android:background="@drawable/white"
+>
+  <TextView 
+    android:id="@+id/mPath"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:textSize="18sp"
+    android:textColor="@drawable/blue"
+  >
+  </TextView>
+
+  <ListView
+      android:id="@android:id/list"
+      android:layout_width="fill_parent"
+      android:layout_height="326dp" >
+
+  </ListView>
+  <LinearLayout 
+  	android:gravity="center"
+    android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	android:background="@drawable/white"
+	>
+	<Button     
+    android:id="@+id/buttonConfirm"  
+    android:layout_width="125dp"    
+    android:layout_height="fill_parent"    
+    android:text="@string/confirm"  
+    />
+    <Button     
+    android:id="@+id/buttonCancle"  
+    android:layout_width="125dp"    
+    android:layout_height="fill_parent"    
+    android:text="@string/cancel"  
+    />
+	
+  </LinearLayout>
+</LinearLayout>
