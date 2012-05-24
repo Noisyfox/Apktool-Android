@@ -34,7 +34,7 @@ public class ApktoolActivity extends Activity {
 	SystemManager SM;
 	ApkOperator Apktool;
 	ProgressDialog mProgressDialog = null;
-	ApkProject ap =new ApkProject(this);
+	ApkProject ap = new ApkProject(this);
 
 	Handler mHandler = new Handler() {
 		@Override
@@ -150,44 +150,30 @@ public class ApktoolActivity extends Activity {
 
 		btn1.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-			
+
 				/*
-				str1 = et1.getText().toString();
-				str2 = et2.getText().toString();
-				if (!(new File(str1).exists())) {
-					Toast.makeText(ApktoolActivity.this,
-							"文件" + str1 + "不存在！请检查", Toast.LENGTH_LONG).show();
-					return;
-				}
-				if ((new File(str1).isDirectory())) {
-					Toast.makeText(ApktoolActivity.this, str1 + "是一个文件夹！请检查",
-							Toast.LENGTH_LONG).show();
-					return;
-				}
-				if ((new File(str2).isFile())) {
-					Toast.makeText(ApktoolActivity.this, str1 + "是一个文件！请检查",
-							Toast.LENGTH_LONG).show();
-					return;
-				}
-				if (new File(str2).isDirectory()) {
-
-					Toast.makeText(ApktoolActivity.this,
-							"文件夹" + str2 + "已存在！请另填。", Toast.LENGTH_LONG)
-							.show();
-					return;
-				} else if (new File(str2).isFile()) {
-					Toast.makeText(ApktoolActivity.this,
-							str2 + "指向的是一个已存在的文件，请填写文件夹！", Toast.LENGTH_LONG)
-							.show();
-					return;
-				}
-
-				String cmd = "sh " + SDCARD + "/apktool/apktool.sh d -f "
-						+ str1 + " " + str2;
-				SystemManager.RootCommand(cmd);
-				Toast.makeText(ApktoolActivity.this, "反编译完成！",
-						Toast.LENGTH_LONG).show();
-*/
+				 * str1 = et1.getText().toString(); str2 =
+				 * et2.getText().toString(); if (!(new File(str1).exists())) {
+				 * Toast.makeText(ApktoolActivity.this, "文件" + str1 + "不存在！请检查",
+				 * Toast.LENGTH_LONG).show(); return; } if ((new
+				 * File(str1).isDirectory())) {
+				 * Toast.makeText(ApktoolActivity.this, str1 + "是一个文件夹！请检查",
+				 * Toast.LENGTH_LONG).show(); return; } if ((new
+				 * File(str2).isFile())) { Toast.makeText(ApktoolActivity.this,
+				 * str1 + "是一个文件！请检查", Toast.LENGTH_LONG).show(); return; } if
+				 * (new File(str2).isDirectory()) {
+				 * 
+				 * Toast.makeText(ApktoolActivity.this, "文件夹" + str2 +
+				 * "已存在！请另填。", Toast.LENGTH_LONG) .show(); return; } else if
+				 * (new File(str2).isFile()) {
+				 * Toast.makeText(ApktoolActivity.this, str2 +
+				 * "指向的是一个已存在的文件，请填写文件夹！", Toast.LENGTH_LONG) .show(); return; }
+				 * 
+				 * String cmd = "sh " + SDCARD + "/apktool/apktool.sh d -f " +
+				 * str1 + " " + str2; SystemManager.RootCommand(cmd);
+				 * Toast.makeText(ApktoolActivity.this, "反编译完成！",
+				 * Toast.LENGTH_LONG).show();
+				 */
 			}
 
 		});

@@ -10,7 +10,7 @@ import per.pqy.apktool.GlobalValues.GString;
 
 public class ApkProject {
 	private boolean opened = false;
-	private String projectName="SystemUI";
+	private String projectName = "SystemUI";
 	private File inputApk = null;
 	private File outputApk = null;
 	private File inputDir = null;
@@ -22,17 +22,17 @@ public class ApkProject {
 	private boolean iDirLocal = false;
 	private boolean oDirLocal = false;
 	private Context mContext;
-	
-	private XMLHelper XMLOperator =new XMLHelper(){
+
+	private XMLHelper XMLOperator = new XMLHelper() {
 		@Override
 		public XMLTags generateXML() {
-			XMLTags rootTag=new XMLTags("apktool_project");
+			XMLTags rootTag = new XMLTags("apktool_project");
 			rootTag.setAttribute("name", projectName);
 			rootTag.setAttribute("projectVersion", "1.0");
 			rootTag.setAttribute("externalVersion", "1.0");
-			
-			XMLTags workingDirectoryTag=new XMLTags("workingDirectory");
-			XMLTags inputApkTag=new XMLTags("inputApk");
+
+			XMLTags workingDirectoryTag = new XMLTags("workingDirectory");
+			XMLTags inputApkTag = new XMLTags("inputApk");
 			inputApkTag.setAttribute("name", "/system/app/SystemUI.apk");
 			workingDirectoryTag.addChildTag(inputApkTag);
 			rootTag.addChildTag(workingDirectoryTag);
@@ -86,7 +86,7 @@ public class ApkProject {
 
 	public final void saveProject() {
 		XMLHelper.XMLFile a;
-		a=XMLOperator.createXML("/aaaava.xml");
+		a = XMLOperator.createXML("/aaaava.xml");
 		XMLOperator.writeXML(a);
 	}
 

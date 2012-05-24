@@ -20,7 +20,7 @@ public abstract class GlobalValues {
 	public static final class GString {
 		public static final String LOG_TAG = "apkworkstation";
 	}
-	
+
 	public static final class GMsg {
 		public static final int MSG_NULL = 0;
 		public static final int MSG_SHOW_LOADING_DIALOG = 1;
@@ -34,9 +34,9 @@ public abstract class GlobalValues {
 		public static final String MSG_TYPE = "MSG";
 		public static final String MSG_INFO = "MSG_INFO";
 	}
-	
+
 	public static final class GCore {
-		//public static final  
+		// public static final
 	}
 
 }

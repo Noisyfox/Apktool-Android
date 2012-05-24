@@ -13,8 +13,8 @@ public class Util {
 		MessageBox msgBox = new MessageBox((Activity) context);
 		return msgBox.showDialog(msg, "") == 1 ? true : false;
 	}
-	
-	public static void sendMessage(Handler handler, int type, String smsg){
+
+	public static void sendMessage(Handler handler, int type, String smsg) {
 		Message msg = new Message();
 		Bundle b = new Bundle();
 		b.putInt(GMsg.MSG_TYPE, type);
@@ -22,8 +22,8 @@ public class Util {
 		msg.setData(b);
 		handler.sendMessage(msg);
 	}
-	
-	public static void sendMessage(Handler handler, int type){
+
+	public static void sendMessage(Handler handler, int type) {
 		Message msg = new Message();
 		Bundle b = new Bundle();
 		b.putInt(GMsg.MSG_TYPE, type);
