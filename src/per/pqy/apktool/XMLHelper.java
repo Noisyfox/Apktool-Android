@@ -114,8 +114,11 @@ public class XMLHelper {
 		return true;
 	}
 
-	private void writeTag(XmlSerializer serializer, XMLTags tag)
+	private void writeTag(XmlSerializer serializer, XMLTags tag, int level)
 			throws Exception {
+		for (int i = 0; i < level; i++) {
+			serializer.text("    ");
+		}
 		serializer.startTag(null, tag.mName);
 		for (int i = 0; i < tag.attributes.size(); i++) {
 			String key = (String) tag.attributes.keySet().toArray()[i];
@@ -123,7 +126,12 @@ public class XMLHelper {
 		}
 		serializer.text(tag.mValue);
 		for (XMLTags t : tag.childTags) {
-			writeTag(serializer, t);
+			serializer.text("\n");
+			writeTag(serializer, t, level + 1);
+		}
+		serializer.text("\n");
+		for (int i = 0; i < level; i++) {
+			serializer.text("    ");
 		}
 		serializer.endTag(null, tag.mName);
 	}
@@ -136,7 +144,8 @@ public class XMLHelper {
 			XmlSerializer serializer = Xml.newSerializer();
 			serializer.setOutput(outStream, "UTF-8");
 			serializer.startDocument("UTF-8", true);
-			writeTag(serializer, generateXML());
+			serializer.text("\n");
+			writeTag(serializer, generateXML(), 0);
 			serializer.endDocument();
 			outStream.flush();
 		} catch (Exception ex) {

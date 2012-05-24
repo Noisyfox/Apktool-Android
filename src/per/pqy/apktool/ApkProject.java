@@ -86,7 +86,7 @@ public class ApkProject {
 
 	public final void saveProject() {
 		XMLHelper.XMLFile a;
-		a = XMLOperator.createXML("/aaaava.xml");
+		a = XMLOperator.createXML("/sdcard/aa.xml");
 		XMLOperator.writeXML(a);
 	}
 
