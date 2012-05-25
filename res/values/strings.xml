@@ -26,4 +26,5 @@
     <string name="loading">载入中，请稍候</string>	
     <string name="return_root">返回根目录..</string>
     <string name="return_upwards">返回上一层..</string>
+    <string name="current_dir">当前:<xliff:g id="path">%1$s</xliff:g></string>
 </resources>

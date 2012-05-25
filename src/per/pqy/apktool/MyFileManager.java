@@ -71,7 +71,7 @@ public class MyFileManager extends ListActivity {
 	}
 
 	private void getFileDir(String filePath) {
-		mPath.setText(filePath);
+		mPath.setText(getString(R.string.current_dir, filePath));
 		items = new ArrayList<String>();
 		paths = new ArrayList<String>();
 		File f = new File(filePath);
