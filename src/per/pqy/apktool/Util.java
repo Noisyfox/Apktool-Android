@@ -1,6 +1,6 @@
 package per.pqy.apktool;
 
-import per.pqy.apktool.GlobalValues.GMsg;
+import per.pqy.apktool.GlobalValues.*;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;

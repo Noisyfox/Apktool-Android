@@ -2,6 +2,8 @@ package per.pqy.apktool;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import android.app.ListActivity;
 import android.content.Intent;
@@ -21,6 +23,20 @@ public class MyFileManager extends ListActivity {
 	private TextView mPath;
 
 	// private final static String TAG = "bb";
+
+	// 对文件进行忽略大小写排序，并且文件夹在前，文件在后
+	private class CaseInsensitiveOrderComparator implements Comparator<File> {
+		public int compare(File lhs, File rhs) {
+			if ((lhs.isDirectory() && rhs.isDirectory())
+					|| (lhs.isFile() && rhs.isFile())) {
+				String lfn = lhs.getName();
+				String rfn = rhs.getName();
+				return lfn.toLowerCase().compareTo(rfn.toLowerCase());
+			} else {
+				return lhs.isDirectory() ? -1 : 1;
+			}
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle icicle) {
@@ -60,6 +76,8 @@ public class MyFileManager extends ListActivity {
 		paths = new ArrayList<String>();
 		File f = new File(filePath);
 		File[] files = f.listFiles();
+
+		Arrays.sort(files, new CaseInsensitiveOrderComparator());
 
 		if (!filePath.equals(rootPath)) {
 			items.add("b1");
