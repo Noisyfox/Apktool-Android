@@ -3,18 +3,25 @@ package per.pqy.apktool;
 import java.io.File;
 import java.util.List;
 
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.content.Context;
 import android.widget.Toast;
+
+import per.pqy.apktool.GlobalValues.*;
 
 //负责处理apkproject并与UI进程交互
 public class ApkOperator {
 
 	private SystemManager SM;
 	private Context mContext;
+	private Handler mHandler;
 
-	public ApkOperator(Context context, SystemManager sm) {
+	public ApkOperator(Context context, SystemManager sm, Handler UI) {
 		mContext = context;
 		SM = sm;
+		mHandler = UI;
 	}
 
 	public final ApkProject createApkProject(String projectName,
@@ -66,7 +73,8 @@ public class ApkOperator {
 	}
 
 	public final void decodeApk(ApkProject apk) {
-
+		File inapk = apk.getFile(GMark.MARK_FILE_APK_INPUT);
+	//	File outdir = apk.
 	}
 
 	public final void buildApk(ApkProject apk) {

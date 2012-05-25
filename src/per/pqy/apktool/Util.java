@@ -24,11 +24,6 @@ public class Util {
 	}
 
 	public static void sendMessage(Handler handler, int type) {
-		Message msg = new Message();
-		Bundle b = new Bundle();
-		b.putInt(GMsg.MSG_TYPE, type);
-		msg.setData(b);
-		handler.sendMessage(msg);
+		sendMessage(handler, type, "");
 	}
-
 }

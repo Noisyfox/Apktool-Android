@@ -143,7 +143,28 @@ public class ApkProject {
 
 	}
 
-	public final File getInputApk() {
-		return inputApk;
+	public final String getProjectName() {
+		return projectName;
+	}
+	
+	public final File getFile(int filemark) {
+		switch (filemark) {
+			case GMark.MARK_FILE_APK_INPUT:
+			    return this.inputApk;
+			case GMark.MARK_FILE_APK_OUTPUT:
+			    return this.outputApk;
+			case GMark.MARK_FILE_DIR_INPUT:
+			    return this.inputDir;
+			case GMark.MARK_FILE_DIR_OUTPUT:
+			    return this.outputDir;
+			case GMark.MARK_FILE_DIR_PROJECT:
+			    return this.project;
+			default:
+		}
+		return null;
+	}
+	
+	public final List<Framework> getFramework() {
+		return frameworks;
 	}
 }

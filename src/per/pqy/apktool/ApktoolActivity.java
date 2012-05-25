@@ -69,6 +69,37 @@ public class ApktoolActivity extends Activity {
 			}
 		}
 	};
+	
+	Handler mApkOperatorHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.getData().getInt(GMsg.MSG_TYPE, GMsg.MSG_NULL)) {
+				case GMsg.MSG_SHOW_LOADING_DIALOG:
+					loadingDialog(msg.getData().getString(GMsg.MSG_INFO), true);
+					break;
+				case GMsg.MSG_HIDE_LOADING_DIALOG:
+					loadingDialog(false);
+					break;
+				case GMsg.MSG_LOADING_START:// 开始初始化
+					loadingDialog(true);
+					break;
+				case GMsg.MSG_LOADING_FINISH:// 初始化成功
+					loadingDialog(false);
+					break;
+				case GMsg.MSG_LOADING_FAIL:// 初始化失败
+					loadingDialog(false);
+					break;
+				case GMsg.MSG_SHOW_TOAST:
+					Toast.makeText(mContext,
+								   msg.getData().getString(GMsg.MSG_INFO),
+								   Toast.LENGTH_LONG).show();
+					break;
+				case GMsg.MSG_NULL:
+				default:
+					break;
+			}
+		}
+	};
 
 	private void loadingDialog(boolean show) {
 		if (show) {
@@ -140,7 +171,7 @@ public class ApktoolActivity extends Activity {
 		setContentView(R.layout.main);
 		mContext = this;
 		SM = new SystemManager(mContext);
-		Apktool = new ApkOperator(mContext, SM);
+		Apktool = new ApkOperator(mContext, SM, mApkOperatorHandler);
 		// 初始化
 		doInit();
 

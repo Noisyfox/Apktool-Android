@@ -39,5 +39,13 @@ public abstract class GlobalValues {
 		public static final String MAINAPP_VERSION = "1.0";
 		public static final String EXTERNAL_VERSION = "1.0";
 	}
+	
+	public static final class GMark {
+		public static final int MARK_FILE_APK_INPUT = 1;
+		public static final int MARK_FILE_APK_OUTPUT = 2;
+		public static final int MARK_FILE_DIR_INPUT = 3;
+		public static final int MARK_FILE_DIR_OUTPUT = 4;
+		public static final int MARK_FILE_DIR_PROJECT = 5;
+	}
 
 }
