@@ -74,7 +74,17 @@ public class ApkOperator {
 
 	public final void decodeApk(ApkProject apk) {
 		File inapk = apk.getFile(GMark.MARK_FILE_APK_INPUT);
-	//	File outdir = apk.
+		File outdir = apk.getFile(GMark.MARK_FILE_DIR_OUTPUT);
+		if (inapk == null) {
+			return;
+		} else if(!inapk.isFile()){
+			return;
+		}
+		if (outdir == null) {
+			return;
+		} else if(!outdir.isDirectory()){
+			return;
+		}
 	}
 
 	public final void buildApk(ApkProject apk) {
