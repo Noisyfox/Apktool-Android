@@ -27,4 +27,7 @@
     <string name="return_root">返回根目录..</string>
     <string name="return_upwards">返回上一层..</string>
     <string name="current_dir">当前:<xliff:g id="path">%1$s</xliff:g></string>
+    <string name="newproject">新建工程</string>
+    <string name="preference">首选项</string>
+    <string name="preference_title">首选项</string>
 </resources>

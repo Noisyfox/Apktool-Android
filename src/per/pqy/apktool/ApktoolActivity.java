@@ -391,12 +391,21 @@ public class ApktoolActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent = null;
 		switch (item.getItemId()) {
 
 		case R.id.item1:
 			// 跳转Activity
-			Intent intent = new Intent();
+			intent = new Intent();
 			intent.setClass(ApktoolActivity.this, About.class);
+			startActivity(intent);
+			return true;
+
+		case R.id.preference:
+			// 跳转Activity
+			intent = new Intent();
+			intent.setClass(ApktoolActivity.this,
+					ApktoolPreferenceActivity.class);
 			startActivity(intent);
 			return true;
 
