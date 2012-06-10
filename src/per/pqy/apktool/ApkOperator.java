@@ -3,13 +3,10 @@ package per.pqy.apktool;
 import java.io.File;
 import java.util.List;
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import per.pqy.apktool.GlobalValues.GMark;
 import android.content.Context;
+import android.os.Handler;
 import android.widget.Toast;
-
-import per.pqy.apktool.GlobalValues.*;
 
 //负责处理apkproject并与UI进程交互
 public class ApkOperator {
@@ -22,6 +19,10 @@ public class ApkOperator {
 		mContext = context;
 		SM = sm;
 		mHandler = UI;
+	}
+
+	public final void buildApk(ApkProject apk) {
+
 	}
 
 	public final ApkProject createApkProject(String projectName,
@@ -58,8 +59,19 @@ public class ApkOperator {
 		return APK;
 	}
 
-	public final void openProject(ApkProject apk) {
-
+	public final void decodeApk(ApkProject apk) {
+		File inapk = apk.getFile(GMark.MARK_FILE_APK_INPUT);
+		File outdir = apk.getFile(GMark.MARK_FILE_DIR_OUTPUT);
+		if (inapk == null) {
+			return;
+		} else if (!inapk.isFile()) {
+			return;
+		}
+		if (outdir == null) {
+			return;
+		} else if (!outdir.isDirectory()) {
+			return;
+		}
 	}
 
 	public final void installFramework(List<ApkProject.Framework> framework) {
@@ -72,22 +84,7 @@ public class ApkOperator {
 
 	}
 
-	public final void decodeApk(ApkProject apk) {
-		File inapk = apk.getFile(GMark.MARK_FILE_APK_INPUT);
-		File outdir = apk.getFile(GMark.MARK_FILE_DIR_OUTPUT);
-		if (inapk == null) {
-			return;
-		} else if(!inapk.isFile()){
-			return;
-		}
-		if (outdir == null) {
-			return;
-		} else if(!outdir.isDirectory()){
-			return;
-		}
-	}
-
-	public final void buildApk(ApkProject apk) {
+	public final void openProject(ApkProject apk) {
 
 	}
 

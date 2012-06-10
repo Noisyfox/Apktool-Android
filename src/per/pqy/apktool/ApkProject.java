@@ -4,11 +4,41 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import per.pqy.apktool.GlobalValues.GCore;
+import per.pqy.apktool.GlobalValues.GMark;
+import per.pqy.apktool.GlobalValues.GString;
 import android.content.Context;
 import android.util.Log;
-import per.pqy.apktool.GlobalValues.*;
 
 public class ApkProject {
+	public class Framework {
+		private File _Res = null;
+		private String tag = "";
+		private boolean local = false;
+
+		public Framework(String p, String t, boolean l) {
+			_Res = new File(p);
+			tag = t;
+			local = l;
+		}
+
+		public File getFile() {
+			return _Res;
+		}
+
+		public String getPath() {
+			return _Res.getAbsolutePath();
+		}
+
+		public String getTag() {
+			return tag;
+		}
+
+		public boolean isLocal() {
+			return local;
+		}
+	}
+
 	private boolean opened = false;
 	private String projectName = "";
 	private File inputApk = null;
@@ -21,6 +51,7 @@ public class ApkProject {
 	private boolean oApkLocal = false;
 	private boolean iDirLocal = false;
 	private boolean oDirLocal = false;
+
 	private Context mContext = null;
 
 	private XMLHelper XMLOperator = new XMLHelper() {
@@ -82,37 +113,44 @@ public class ApkProject {
 		}
 	};
 
-	public class Framework {
-		private File _Res = null;
-		private String tag = "";
-		private boolean local = false;
-
-		public Framework(String p, String t, boolean l) {
-			_Res = new File(p);
-			tag = t;
-			local = l;
-		}
-
-		public String getTag() {
-			return tag;
-		}
-
-		public String getPath() {
-			return _Res.getAbsolutePath();
-		}
-
-		public File getFile() {
-			return _Res;
-		}
-
-		public boolean isLocal() {
-			return local;
-		}
-	}
-
 	public ApkProject(Context context) {
 		frameworks = new ArrayList<Framework>();
 		mContext = context;
+	}
+
+	public final void addFramework(String frameworkRes, String tag,
+			boolean local) {
+		Framework _framework = new Framework(frameworkRes, tag, local);
+		frameworks.add(_framework);
+	}
+
+	public final File getFile(int filemark) {
+		switch (filemark) {
+		case GMark.MARK_FILE_APK_INPUT:
+			return this.inputApk;
+		case GMark.MARK_FILE_APK_OUTPUT:
+			return this.outputApk;
+		case GMark.MARK_FILE_DIR_INPUT:
+			return this.inputDir;
+		case GMark.MARK_FILE_DIR_OUTPUT:
+			return this.outputDir;
+		case GMark.MARK_FILE_DIR_PROJECT:
+			return this.project;
+		default:
+		}
+		return null;
+	}
+
+	public final List<Framework> getFramework() {
+		return frameworks;
+	}
+
+	public final String getProjectName() {
+		return projectName;
+	}
+
+	public final void loadInputApk(String path) {
+
 	}
 
 	public final boolean openProject(String projectpath) {
@@ -134,40 +172,5 @@ public class ApkProject {
 		XMLHelper.XMLFile b;
 		b = XMLOperator.createXML("/sdcard/ab.xml");
 		XMLOperator.writeXML(b, tag);
-	}
-
-	public final void addFramework(String frameworkRes, String tag,
-			boolean local) {
-		Framework _framework = new Framework(frameworkRes, tag, local);
-		frameworks.add(_framework);
-	}
-
-	public final void loadInputApk(String path) {
-
-	}
-
-	public final String getProjectName() {
-		return projectName;
-	}
-	
-	public final File getFile(int filemark) {
-		switch (filemark) {
-			case GMark.MARK_FILE_APK_INPUT:
-			    return this.inputApk;
-			case GMark.MARK_FILE_APK_OUTPUT:
-			    return this.outputApk;
-			case GMark.MARK_FILE_DIR_INPUT:
-			    return this.inputDir;
-			case GMark.MARK_FILE_DIR_OUTPUT:
-			    return this.outputDir;
-			case GMark.MARK_FILE_DIR_PROJECT:
-			    return this.project;
-			default:
-		}
-		return null;
-	}
-	
-	public final List<Framework> getFramework() {
-		return frameworks;
 	}
 }

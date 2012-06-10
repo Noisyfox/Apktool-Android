@@ -1,6 +1,6 @@
 package per.pqy.apktool;
 
-import per.pqy.apktool.GlobalValues.*;
+import per.pqy.apktool.GlobalValues.GMsg;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -9,9 +9,8 @@ import android.os.Message;
 
 public class Util {
 
-	public static boolean showConfirmDialog(Context context, String msg) {
-		MessageBox msgBox = new MessageBox((Activity) context);
-		return msgBox.showDialog(msg, "") == 1 ? true : false;
+	public static void sendMessage(Handler handler, int type) {
+		sendMessage(handler, type, "");
 	}
 
 	public static void sendMessage(Handler handler, int type, String smsg) {
@@ -23,7 +22,8 @@ public class Util {
 		handler.sendMessage(msg);
 	}
 
-	public static void sendMessage(Handler handler, int type) {
-		sendMessage(handler, type, "");
+	public static boolean showConfirmDialog(Context context, String msg) {
+		MessageBox msgBox = new MessageBox((Activity) context);
+		return msgBox.showDialog(msg, "") == 1 ? true : false;
 	}
 }

@@ -3,8 +3,7 @@ package per.pqy.apktool;
 import java.io.DataOutputStream;
 import java.io.File;
 
-import per.pqy.apktool.GlobalValues.*;
-
+import per.pqy.apktool.GlobalValues.GMsg;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -69,37 +68,70 @@ public class ApktoolActivity extends Activity {
 			}
 		}
 	};
-	
+
 	Handler mApkOperatorHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.getData().getInt(GMsg.MSG_TYPE, GMsg.MSG_NULL)) {
-				case GMsg.MSG_SHOW_LOADING_DIALOG:
-					loadingDialog(msg.getData().getString(GMsg.MSG_INFO), true);
-					break;
-				case GMsg.MSG_HIDE_LOADING_DIALOG:
-					loadingDialog(false);
-					break;
-				case GMsg.MSG_LOADING_START:// 开始初始化
-					loadingDialog(true);
-					break;
-				case GMsg.MSG_LOADING_FINISH:// 初始化成功
-					loadingDialog(false);
-					break;
-				case GMsg.MSG_LOADING_FAIL:// 初始化失败
-					loadingDialog(false);
-					break;
-				case GMsg.MSG_SHOW_TOAST:
-					Toast.makeText(mContext,
-								   msg.getData().getString(GMsg.MSG_INFO),
-								   Toast.LENGTH_LONG).show();
-					break;
-				case GMsg.MSG_NULL:
-				default:
-					break;
+			case GMsg.MSG_SHOW_LOADING_DIALOG:
+				loadingDialog(msg.getData().getString(GMsg.MSG_INFO), true);
+				break;
+			case GMsg.MSG_HIDE_LOADING_DIALOG:
+				loadingDialog(false);
+				break;
+			case GMsg.MSG_LOADING_START:// 开始初始化
+				loadingDialog(true);
+				break;
+			case GMsg.MSG_LOADING_FINISH:// 初始化成功
+				loadingDialog(false);
+				break;
+			case GMsg.MSG_LOADING_FAIL:// 初始化失败
+				loadingDialog(false);
+				break;
+			case GMsg.MSG_SHOW_TOAST:
+				Toast.makeText(mContext,
+						msg.getData().getString(GMsg.MSG_INFO),
+						Toast.LENGTH_LONG).show();
+				break;
+			case GMsg.MSG_NULL:
+			default:
+				break;
 			}
 		}
 	};
+
+	private void doInit() {
+		Thread initThread = new Thread() {
+			public void err_Msg(String s) {
+				Util.sendMessage(mHandler, GMsg.MSG_SHOW_TOAST, s);
+			}
+
+			public void init_Fail() {
+				Util.sendMessage(mHandler, GMsg.MSG_LOADING_FAIL);
+			}
+
+			private void init_Start() {
+				Util.sendMessage(mHandler, GMsg.MSG_LOADING_START);
+			}
+
+			public void init_Success() {
+				Util.sendMessage(mHandler, GMsg.MSG_LOADING_FINISH);
+			}
+
+			public void run() {
+				init_Start();
+				try {
+					SM.prepareSystem();
+					ap.saveProject();
+				} catch (Exception e) {
+					err_Msg(e.getMessage());
+					init_Fail();
+				}
+				init_Success();
+			}
+		};
+		initThread.start();
+	}
 
 	private void loadingDialog(boolean show) {
 		if (show) {
@@ -132,37 +164,19 @@ public class ApktoolActivity extends Activity {
 		}
 	}
 
-	private void doInit() {
-		Thread initThread = new Thread() {
-			public void run() {
-				init_Start();
-				try {
-					SM.prepareSystem();
-					ap.saveProject();
-				} catch (Exception e) {
-					err_Msg(e.getMessage());
-					init_Fail();
-				}
-				init_Success();
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == RESULTCODE_FILESELECT_IN) {
+			Bundle bundle = null;
+			if (data != null && (bundle = data.getExtras()) != null) {
+				et1.setText(bundle.getString("file"));
 			}
-
-			private void init_Start() {
-				Util.sendMessage(mHandler, GMsg.MSG_LOADING_START);
+		} else if (requestCode == RESULTCODE_FILESELECT_OUT) {
+			Bundle bundle = null;
+			if (data != null && (bundle = data.getExtras()) != null) {
+				et2.setText(bundle.getString("file"));
 			}
-
-			public void init_Success() {
-				Util.sendMessage(mHandler, GMsg.MSG_LOADING_FINISH);
-			}
-
-			public void init_Fail() {
-				Util.sendMessage(mHandler, GMsg.MSG_LOADING_FAIL);
-			}
-
-			public void err_Msg(String s) {
-				Util.sendMessage(mHandler, GMsg.MSG_SHOW_TOAST, s);
-			}
-		};
-		initThread.start();
+		}
 	}
 
 	@Override
@@ -343,23 +357,23 @@ public class ApktoolActivity extends Activity {
 		}
 
 		);
-		
+
 		btn_in.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(ApktoolActivity.this,MyFileManager.class);
+				Intent intent = new Intent(ApktoolActivity.this,
+						MyFileManager.class);
 				startActivityForResult(intent, RESULTCODE_FILESELECT_IN);
 			}
-		}
-		);
+		});
 
 		btn_out.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(ApktoolActivity.this,MyFileManager.class);
+				Intent intent = new Intent(ApktoolActivity.this,
+						MyFileManager.class);
 				startActivityForResult(intent, RESULTCODE_FILESELECT_OUT);
 			}
-		}
-		);
-		
+		});
+
 	}
 
 	@Override
@@ -367,6 +381,12 @@ public class ApktoolActivity extends Activity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu, menu);
 		return true;
+	}
+
+	@Override
+	public void onDestroy() {
+		SM.cleanSystem();
+		super.onDestroy();
 	}
 
 	@Override
@@ -383,27 +403,6 @@ public class ApktoolActivity extends Activity {
 		}
 
 		return false;
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == RESULTCODE_FILESELECT_IN) {
-			Bundle bundle = null;
-			if (data != null && (bundle = data.getExtras()) != null) {
-				et1.setText(bundle.getString("file"));
-			}
-		} else if (requestCode == RESULTCODE_FILESELECT_OUT) {
-			Bundle bundle = null;
-			if (data != null && (bundle = data.getExtras()) != null) {
-				et2.setText(bundle.getString("file"));
-			}
-		}
-	}
-
-	@Override
-	public void onDestroy() {
-		SM.cleanSystem();
-		super.onDestroy();
 	}
 
 }

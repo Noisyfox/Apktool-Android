@@ -7,14 +7,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlSerializer;
 
-import android.util.Xml;
 import android.os.Bundle;
+import android.util.Xml;
 
 public abstract class XMLHelper {
 
@@ -37,42 +37,6 @@ public abstract class XMLHelper {
 			this.name = name;
 		}
 
-		public String getName() {
-			return name;
-		}
-
-		public void setValue(String value) {
-			this.value = value == null ? "" : value;
-		}
-
-		public String getValue() {
-			return value;
-		}
-
-		public void setAttribute(String name, String value) {
-			if (attributes.keySet().contains(name)) {
-				attributes.remove(name);
-			}
-			attributes.putString(name, value);
-		}
-
-		public String getAttribute(String name) {
-			return attributes.getString(name);
-		}
-		
-		public String getAttribute(int index) {
-			return getAttributeKey(index);
-		}
-		
-		public int getAttributeCount(){
-			return attributes.size();
-		}
-		
-		public String getAttributeKey(int index) {
-			return (String) attributes.keySet().toArray()[index];
-		}
-		
-
 		public void addChildTag(XMLTags tag) {
 			if (tag.fatherTag != null) {
 				tag.fatherTag.removeChildTag(tag);
@@ -83,36 +47,63 @@ public abstract class XMLHelper {
 			tag.setFatherTag(this);
 		}
 
+		public String getAttribute(int index) {
+			return getAttributeKey(index);
+		}
+
+		public String getAttribute(String name) {
+			return attributes.getString(name);
+		}
+
+		public int getAttributeCount() {
+			return attributes.size();
+		}
+
+		public String getAttributeKey(int index) {
+			return (String) attributes.keySet().toArray()[index];
+		}
+
+		public XMLTags getChildTag(int index) {
+			return childTags.get(index);
+		}
+
+		public int getChildTagCount() {
+			return childTags.size();
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public boolean hasChildTag() {
+			return !childTags.isEmpty();
+		}
+
 		public void removeChildTag(XMLTags tag) {
 			if (childTags.remove(tag)) {
 				tag.setFatherTag(null);
 			}
 		}
 
+		public void setAttribute(String name, String value) {
+			if (attributes.keySet().contains(name)) {
+				attributes.remove(name);
+			}
+			attributes.putString(name, value);
+		}
+
 		public void setFatherTag(XMLTags fathertag) {
 			fatherTag = fathertag;
 		}
-		
-		public boolean hasChildTag(){
-			return !childTags.isEmpty();
-		}
-		
-		public int getChildTagCount(){
-			return childTags.size();
-		}
-		
-		public XMLTags getChildTag(int index){
-			return childTags.get(index);
+
+		public void setValue(String value) {
+			this.value = value == null ? "" : value;
 		}
 
-	}
-
-	public XMLFile openXML(String path) {
-		XMLFile xml = new XMLFile(path);
-		boolean success = true;
-		if (!xml.isFile())
-			success = false;
-		return success ? xml : null;
 	}
 
 	public XMLFile createXML(String path) {
@@ -141,6 +132,16 @@ public abstract class XMLHelper {
 				}
 			}
 		}
+		return success ? xml : null;
+	}
+
+	public abstract XMLTags generateXML();
+
+	public XMLFile openXML(String path) {
+		XMLFile xml = new XMLFile(path);
+		boolean success = true;
+		if (!xml.isFile())
+			success = false;
 		return success ? xml : null;
 	}
 
@@ -182,7 +183,8 @@ public abstract class XMLHelper {
 			}
 			eventType = parser.getEventType();
 		}
-		if(rootTag.hasChildTag())rootTag.setValue("");
+		if (rootTag.hasChildTag())
+			rootTag.setValue("");
 		return rootTag;
 	}
 
@@ -217,7 +219,7 @@ public abstract class XMLHelper {
 			serializer.attribute(null, key, tag.getAttribute(key));
 		}
 		serializer.text(tag.getValue());
-		for(int i = 0; i< tag.getChildTagCount(); i++){
+		for (int i = 0; i < tag.getChildTagCount(); i++) {
 			serializer.text("\n");
 			writeTag(serializer, tag.getChildTag(i), level + 1);
 		}
@@ -281,7 +283,5 @@ public abstract class XMLHelper {
 		}
 		return success;
 	}
-
-	public abstract XMLTags generateXML();
 
 }

@@ -3,19 +3,52 @@ package per.pqy.apktool;
 import java.io.DataOutputStream;
 import java.io.File;
 
+import per.pqy.apktool.GlobalValues.GPath;
+import per.pqy.apktool.GlobalValues.GString;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import per.pqy.apktool.GlobalValues.*;
-
 public class SystemManager {
 
+	public static boolean RootCommand(String command) {
+		Process process = null;
+		DataOutputStream os = null;
+		try {
+			process = Runtime.getRuntime().exec("su");
+			os = new DataOutputStream(process.getOutputStream());
+			os.writeBytes(command + "\n");
+			os.writeBytes("exit\n");
+			os.flush();
+			Log.d(GString.LOG_TAG, command + " : " + process.waitFor());
+		} catch (Exception e) {
+			Log.d(GString.LOG_TAG, "ROOT REE" + e.getMessage());
+			return false;
+		} finally {
+			try {
+				if (os != null) {
+					os.close();
+				}
+				process.destroy();
+			} catch (Exception e) {
+			}
+		}
+		Log.d(GString.LOG_TAG, "RootSUC ");
+		return true;
+	}
+
 	public Boolean mSystemOK = false;
+
 	private Context mContext;
 
 	public SystemManager(Context context) {
 		mContext = context;
+	}
+
+	public void cleanSystem() {
+		// 取消挂载java
+		RootCommand2(GPath.BUSYBOX + " umount /lib");
+		mSystemOK = false;
 	}
 
 	/*
@@ -57,38 +90,6 @@ public class SystemManager {
 			throw new Exception(mContext.getString(R.string.sys_init_fail));
 		}
 		mSystemOK = true;
-	}
-
-	public void cleanSystem() {
-		// 取消挂载java
-		RootCommand2(GPath.BUSYBOX + " umount /lib");
-		mSystemOK = false;
-	}
-
-	public static boolean RootCommand(String command) {
-		Process process = null;
-		DataOutputStream os = null;
-		try {
-			process = Runtime.getRuntime().exec("su");
-			os = new DataOutputStream(process.getOutputStream());
-			os.writeBytes(command + "\n");
-			os.writeBytes("exit\n");
-			os.flush();
-			Log.d(GString.LOG_TAG, command + " : " + process.waitFor());
-		} catch (Exception e) {
-			Log.d(GString.LOG_TAG, "ROOT REE" + e.getMessage());
-			return false;
-		} finally {
-			try {
-				if (os != null) {
-					os.close();
-				}
-				process.destroy();
-			} catch (Exception e) {
-			}
-		}
-		Log.d(GString.LOG_TAG, "RootSUC ");
-		return true;
 	}
 
 	public int RootCommand2(String command) {

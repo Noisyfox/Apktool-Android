@@ -21,6 +21,17 @@ public class MessageBox extends Dialog {
 		onCreate();
 	}
 
+	public void endDialog(int result) {
+		dismiss();
+		setDialogResult(result);
+		Message m = mHandler.obtainMessage();
+		mHandler.sendMessage(m);
+	}
+
+	public int getDialogResult() {
+		return dialogResult;
+	}
+
 	public void onCreate() {
 		setContentView(R.layout.messagebox);
 		findViewById(R.id.btnCancel).setOnClickListener(
@@ -36,19 +47,8 @@ public class MessageBox extends Dialog {
 		});
 	}
 
-	public int getDialogResult() {
-		return dialogResult;
-	}
-
 	public void setDialogResult(int dialogResult) {
 		this.dialogResult = dialogResult;
-	}
-
-	public void endDialog(int result) {
-		dismiss();
-		setDialogResult(result);
-		Message m = mHandler.obtainMessage();
-		mHandler.sendMessage(m);
 	}
 
 	public int showDialog(String Msg, String Title) {
