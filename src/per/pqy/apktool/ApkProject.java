@@ -24,7 +24,6 @@ public class ApkProject {
 	private Context mContext = null;
 
 	private XMLHelper XMLOperator = new XMLHelper() {
-		@Override
 		public XMLTags generateXML() {
 			XMLTags rootTag = new XMLTags("apktool_project");
 			rootTag.setAttribute("name", projectName);
@@ -131,6 +130,10 @@ public class ApkProject {
 		XMLHelper.XMLFile a;
 		a = XMLOperator.createXML("/sdcard/aa.xml");
 		XMLOperator.writeXML(a);
+		XMLHelper.XMLTags tag = XMLOperator.readXML(a);
+		XMLHelper.XMLFile b;
+		b = XMLOperator.createXML("/sdcard/ab.xml");
+		XMLOperator.writeXML(b, tag);
 	}
 
 	public final void addFramework(String frameworkRes, String tag,
