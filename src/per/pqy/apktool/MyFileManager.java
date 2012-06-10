@@ -91,7 +91,7 @@ public class MyFileManager extends ListActivity {
 			paths.add(file.getPath());
 		}
 
-		setListAdapter(new MyAdapter(this, items, paths));
+		setListAdapter(new MyFileAdapter(this, items, paths));
 	}
 
 	@Override
