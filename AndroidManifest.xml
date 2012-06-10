@@ -29,7 +29,7 @@
             android:name=".MyFileManager"
             android:theme="@android:style/Theme.Dialog" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="ApktoolPreferenceActivity" android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="portrait"></activity>
+        <activity android:name="ApktoolPreferenceActivity" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

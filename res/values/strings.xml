@@ -23,11 +23,17 @@
     <string name="dir_is_file">"<xliff:g id="path">%1$s</xliff:g>"是一个文件，无法创建该文件夹！请检查</string>
     <string name="mkdir_fail">创建文件夹"<xliff:g id="path">%1$s</xliff:g>"失败！请检查</string>
     <string name="su_fail">获取su权限失败！请检查</string>
-    <string name="loading">载入中，请稍候</string>	
+    <string name="loading">载入中，请稍候</string>
     <string name="return_root">返回根目录..</string>
     <string name="return_upwards">返回上一层..</string>
     <string name="current_dir">当前:<xliff:g id="path">%1$s</xliff:g></string>
     <string name="newproject">新建工程</string>
     <string name="preference">首选项</string>
     <string name="preference_title">首选项</string>
+    <string name="preference_title_common">常规设置</string>
+    <string name="preference_title_project">工程设置</string>
+    <string name="pref_project_folder">默认工程文件夹</string>
+    <string name="pref_project_folder_summary">新建工程时默认的文件夹，当前路径为<xliff:g id="string">%1$s</xliff:g></string>
+    <string name="default_project_folder">/mnt/sdcard/apktool_project</string>
+
 </resources>

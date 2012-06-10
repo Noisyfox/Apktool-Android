@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/preference_title" >
 
-    <PreferenceCategory android:title="@string/preference_title" >
-
+    <PreferenceCategory android:title="@string/preference_title_common" >
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/preference_title_project" >
+        <EditTextPreference
+            android:defaultValue="@string/default_project_folder"
+            android:key="pref_key_project_folder"
+            android:summary="@string/pref_project_folder_summary"
+            android:title="@string/pref_project_folder" />
     </PreferenceCategory>
 
 </PreferenceScreen>

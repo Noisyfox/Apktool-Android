@@ -16,10 +16,17 @@
  */
 package per.pqy.apktool;
 
+import java.io.File;
+
+import per.pqy.apktool.GlobalValues.GPath;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
 
 /**
  * @ClassName: ApktoolPreferenceActivity
@@ -30,18 +37,79 @@ import android.preference.PreferenceActivity;
  */
 public class ApktoolPreferenceActivity extends PreferenceActivity implements
 		OnSharedPreferenceChangeListener {
+	private static final String PROJECT_FOLDER = "pref_key_project_folder";
+	private static final String SYSTEM_SEPARATOR = File.separator;
+
+	private EditTextPreference mEditTextPreference;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		addPreferencesFromResource(R.xml.preferences);
+		mEditTextPreference = (EditTextPreference) findPreference(PROJECT_FOLDER);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		// Setup the initial values
+		SharedPreferences sharedPreferences = getPreferenceScreen()
+				.getSharedPreferences();
+
+		mEditTextPreference.setSummary(this.getString(
+				R.string.pref_project_folder_summary, sharedPreferences
+						.getString(PROJECT_FOLDER, GPath.DEFAULT_PROJECT)));
+
+		// Set up a listener whenever a key changes
+		sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		// Unregister the listener whenever a key changes
+		getPreferenceScreen().getSharedPreferences()
+				.unregisterOnSharedPreferenceChangeListener(this);
+	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-		// TODO Auto-generated method stub
+		if (PROJECT_FOLDER.equals(key)) {
+			mEditTextPreference.setSummary(this.getString(
+					R.string.pref_project_folder_summary, sharedPreferences
+							.getString(PROJECT_FOLDER, GPath.DEFAULT_PROJECT)));
+		}
 
 	}
-	
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preferences);
-    }
+
+	public static String getProjectFolder(Context context) {
+		SharedPreferences settings = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		String projectFolder = settings.getString(PROJECT_FOLDER, context
+				.getString(R.string.default_project_folder,
+						GPath.DEFAULT_PROJECT));
+
+		if (TextUtils.isEmpty(projectFolder)) { // setting primary folder =
+												// empty("")
+			projectFolder = GPath.DEFAULT_PROJECT;
+		}
+
+		// it's remove the end char of the project folder setting when it with
+		// the
+		// '/' at the end.
+		int length = projectFolder.length();
+		if (length > 1
+				&& SYSTEM_SEPARATOR.equals(projectFolder.substring(length - 1))) { // length
+																					// =
+																					// 1,
+																					// ROOT_PATH
+			return projectFolder.substring(0, length - 1);
+		} else {
+			return projectFolder;
+		}
+	}
 
 }

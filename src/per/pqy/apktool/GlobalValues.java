@@ -41,6 +41,8 @@ public abstract class GlobalValues {
 		public static final String JAR_APKTOOL = APKTOOL_EXT + "/apktool.jar";
 		public static final String JAR_SIGNAPK = APKTOOL_EXT
 				+ "/sign/signapk.jar";
+		public static final String DEFAULT_PROJECT = SD_CARD
+				+ "/apktool_project";
 
 	}
 
