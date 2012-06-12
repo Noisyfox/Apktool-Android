@@ -46,6 +46,9 @@ public class MyFileManager extends ListActivity {
 		paths = new ArrayList<String>();
 		File f = new File(filePath);
 		File[] files = f.listFiles();
+		if(files == null){
+			files = new File[0];
+		}
 
 		Arrays.sort(files, new CaseInsensitiveOrderComparator());
 
