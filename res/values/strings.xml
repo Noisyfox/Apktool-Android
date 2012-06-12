@@ -35,5 +35,11 @@
     <string name="pref_project_folder">默认工程文件夹</string>
     <string name="pref_project_folder_summary">新建工程时默认的文件夹，当前路径为<xliff:g id="string">%1$s</xliff:g></string>
     <string name="default_project_folder">/mnt/sdcard/apktool_project</string>
-
+    <string name="project_location">位置:\n<xliff:g id="path">%1$s</xliff:g></string>
+    <string name="project_name">工程名:</string>
+    <string name="project_name_hint">与工程文件夹相同</string>
+    <string name="project_apk_input">原始APK文件:</string>
+    <string name="project_apk_input_cploc">复制到工程目录中(推荐)</string>
+    <string name="project_create">创建工程</string>
+    <string name="project_create_emptyprojectname">工程名称不能为空！请检查</string>
 </resources>

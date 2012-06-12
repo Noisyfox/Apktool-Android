@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_createproject"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" android:padding="3dp">
+
+    <TextView
+        android:id="@+id/createproject_textview_project_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/project_location"
+        android:textAppearance="?android:attr/textAppearanceMedium" android:maxLines="2"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/project_name"
+        android:textAppearance="?android:attr/textAppearanceMedium" android:paddingTop="3dp"/>
+
+    <EditText
+        android:id="@+id/createproject_edittext_project_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:hint="@string/project_name_hint" android:singleLine="true">
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/project_apk_input"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/createproject_edittext_project_apk_in"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:layout_weight="1" android:singleLine="true"/>
+
+        <Button
+            android:id="@+id/createproject_button_project_browser_apk_in"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/browser" />
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/project_apk_input_cploc"/>
+
+</LinearLayout>

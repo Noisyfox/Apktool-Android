@@ -2,21 +2,27 @@ package per.pqy.apktool;
 
 import java.io.DataOutputStream;
 import java.io.File;
+import java.lang.reflect.Field;
 
 import per.pqy.apktool.GlobalValues.GMsg;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,9 +40,11 @@ public class ApktoolActivity extends Activity {
 	ApkOperator Apktool;
 	ProgressDialog mProgressDialog = null;
 	ApkProject ap = new ApkProject(this);
+	AlertDialog mCreateProjectAlertDialog = null;
 
 	private static int RESULTCODE_FILESELECT_IN = 1;
 	private static int RESULTCODE_FILESELECT_OUT = 2;
+	private static int RESULTCODE_FILESELECT_CREATE_PROJECT_APKFILE_IN = 3;
 
 	Handler mHandler = new Handler() {
 		@Override
@@ -175,6 +183,20 @@ public class ApktoolActivity extends Activity {
 			Bundle bundle = null;
 			if (data != null && (bundle = data.getExtras()) != null) {
 				et2.setText(bundle.getString("file"));
+			}
+		} else if (requestCode == RESULTCODE_FILESELECT_CREATE_PROJECT_APKFILE_IN) {
+			Bundle bundle = null;
+			if (data != null && (bundle = data.getExtras()) != null) {
+				if (mCreateProjectAlertDialog != null) {
+					if (mCreateProjectAlertDialog.isShowing()) {
+						EditText et = (EditText) mCreateProjectAlertDialog
+								.findViewById(R.id.createproject_edittext_project_apk_in);
+						File f = new File(bundle.getString("file"));
+						if (f.isFile()) {
+							et.setText(bundle.getString("file"));
+						}
+					}
+				}
 			}
 		}
 	}
@@ -409,6 +431,91 @@ public class ApktoolActivity extends Activity {
 			startActivity(intent);
 			return true;
 
+		case R.id.newproject:
+			// 新建工程
+			LayoutInflater inflater = getLayoutInflater();
+			View layout = inflater.inflate(R.layout.createproject,
+					(ViewGroup) findViewById(R.id.dialog_createproject));
+			mCreateProjectAlertDialog = new AlertDialog.Builder(this)
+					.setTitle(mContext.getString(R.string.newproject))
+					.setView(layout)
+					.setCancelable(false)
+					.setPositiveButton(
+							mContext.getString(R.string.project_create),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									try {
+										Field field = dialog.getClass()
+												.getSuperclass()
+												.getDeclaredField("mShowing");
+										field.setAccessible(true);
+										field.set(dialog, false);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+									String projectname = ((EditText) mCreateProjectAlertDialog
+											.findViewById(R.id.createproject_edittext_project_name))
+											.getText().toString();
+									String path_apk_in = ((EditText) mCreateProjectAlertDialog
+											.findViewById(R.id.createproject_edittext_project_apk_in))
+											.getText().toString();
+									ApkProject pj = Apktool.createApkProject(
+											projectname,
+											ApktoolPreferenceActivity
+													.getProjectFolder(mContext)
+													+ "/" + projectname);
+									if (pj == null)
+										return;
+									
+									try {
+										Field field = dialog.getClass()
+												.getSuperclass()
+												.getDeclaredField("mShowing");
+										field.setAccessible(true);
+										field.set(dialog, true);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+
+								}
+							})
+					.setNegativeButton(mContext.getString(R.string.cancel),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									try {
+										Field field = dialog.getClass()
+												.getSuperclass()
+												.getDeclaredField("mShowing");
+										field.setAccessible(true);
+										field.set(dialog, true);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+							}).show();
+
+			TextView tv_projectlocation = (TextView) mCreateProjectAlertDialog
+					.findViewById(R.id.createproject_textview_project_location);
+			tv_projectlocation.setText(mContext.getString(
+					R.string.project_location,
+					ApktoolPreferenceActivity.getProjectFolder(mContext)));
+
+			Button bt_browser = (Button) mCreateProjectAlertDialog
+					.findViewById(R.id.createproject_button_project_browser_apk_in);
+			bt_browser.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(ApktoolActivity.this,
+							MyFileManager.class);
+					startActivityForResult(intent,
+							RESULTCODE_FILESELECT_CREATE_PROJECT_APKFILE_IN);
+				}
+			});
+			return true;
 		}
 
 		return false;

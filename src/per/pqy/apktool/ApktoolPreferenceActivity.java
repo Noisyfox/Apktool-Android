@@ -40,13 +40,13 @@ public class ApktoolPreferenceActivity extends PreferenceActivity implements
 	private static final String PROJECT_FOLDER = "pref_key_project_folder";
 	private static final String SYSTEM_SEPARATOR = File.separator;
 
-	private EditTextPreference mEditTextPreference;
+	private EditTextPreference mEditTextPreferenceProjectFolder;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
-		mEditTextPreference = (EditTextPreference) findPreference(PROJECT_FOLDER);
+		mEditTextPreferenceProjectFolder = (EditTextPreference) findPreference(PROJECT_FOLDER);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class ApktoolPreferenceActivity extends PreferenceActivity implements
 		SharedPreferences sharedPreferences = getPreferenceScreen()
 				.getSharedPreferences();
 
-		mEditTextPreference.setSummary(this.getString(
+		mEditTextPreferenceProjectFolder.setSummary(this.getString(
 				R.string.pref_project_folder_summary, sharedPreferences
 						.getString(PROJECT_FOLDER, GPath.DEFAULT_PROJECT)));
 
@@ -78,7 +78,7 @@ public class ApktoolPreferenceActivity extends PreferenceActivity implements
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		if (PROJECT_FOLDER.equals(key)) {
-			mEditTextPreference.setSummary(this.getString(
+			mEditTextPreferenceProjectFolder.setSummary(this.getString(
 					R.string.pref_project_folder_summary, sharedPreferences
 							.getString(PROJECT_FOLDER, GPath.DEFAULT_PROJECT)));
 		}
@@ -98,8 +98,7 @@ public class ApktoolPreferenceActivity extends PreferenceActivity implements
 		}
 
 		// it's remove the end char of the project folder setting when it with
-		// the
-		// '/' at the end.
+		// the '/' at the end.
 		int length = projectFolder.length();
 		if (length > 1
 				&& SYSTEM_SEPARATOR.equals(projectFolder.substring(length - 1))) { // length

@@ -27,12 +27,20 @@ public class ApkOperator {
 
 	public final ApkProject createApkProject(String projectName,
 			String projectpath) {
+		if(projectName.replace(" ", "").isEmpty()){
+			Toast.makeText(
+					mContext,
+					mContext.getString(R.string.project_create_emptyprojectname),
+					Toast.LENGTH_LONG).show();
+			return null;
+		}
 		ApkProject APK = new ApkProject(mContext);
 		APK.project = new File(projectpath);
 		if (APK.project.exists()) {
 			if (APK.project.isDirectory()) {
-				if (!Util.showConfirmDialog(mContext,
-						mContext.getString(R.string.project_create_dir_exist))) {
+				if (!Util.showConfirmDialog(mContext, mContext.getString(
+						R.string.project_create_dir_exist,
+						APK.project.getAbsoluteFile()))) {
 					return null;
 				}
 			} else {
